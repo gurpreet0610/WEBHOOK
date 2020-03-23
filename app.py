@@ -688,7 +688,7 @@ def get_query_images():
 def _general():
     return {
         'dataset': dataset,
-        'login_required': bool(app.config.get('PASSWORD')),
+        'login_required': False,
     }
 
 @app.context_processor
