@@ -729,7 +729,7 @@ def get_option_parser():
     parser.add_option(
         '-p',
         '--port',
-        default=8080,
+        default=5000,
         help='Port for web interface, default=8080',
         type='int')
     parser.add_option(
@@ -752,7 +752,7 @@ def get_option_parser():
     parser.add_option(
         '-P',
         '--password',
-        default=True,
+        default=False,
         action='store_true',
         dest='prompt_password',
         help='Prompt for password to access database browser.')
