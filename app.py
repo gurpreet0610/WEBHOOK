@@ -752,7 +752,7 @@ def get_option_parser():
     parser.add_option(
         '-P',
         '--password',
-        default=False,
+        default=True,
         action='store_true',
         dest='prompt_password',
         help='Prompt for password to access database browser.')
