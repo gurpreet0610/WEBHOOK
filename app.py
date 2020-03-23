@@ -752,7 +752,7 @@ def get_option_parser():
     parser.add_option(
         '-P',
         '--password',
-        default=False,
+        default=True,
         action='store_true',
         dest='prompt_password',
         help='Prompt for password to access database browser.')
@@ -790,6 +790,8 @@ def install_auth_handler(password):
 
     @app.before_request
     def check_password():
+        if request.path == '/webhook' or request.path == '/webhook/' :
+            return
         if not session.get('authorized') and request.path != '/login/' and \
            not request.path.startswith(('/static/', '/favicon')):
             flash('You must log-in to view the database browser.', 'danger')
@@ -834,17 +836,17 @@ def main():
     args =['data.sqlite']
 
     password = None
-    # if options.prompt_password:
-    #     if os.environ.get('SQLITE_WEB_PASSWORD'):
-    #         password = os.environ['SQLITE_WEB_PASSWORD']
-    #     else:
-    #         while True:
-    #             password = '0610'
-    #             password_confirm = '0610'
-    #             if password != password_confirm:
-    #                 print('Passwords did not match!')
-    #             else:
-    #                 break
+    if options.prompt_password:
+        if os.environ.get('SQLITE_WEB_PASSWORD'):
+            password = os.environ['SQLITE_WEB_PASSWORD']
+        else:
+            while True:
+                password = '0610'
+                password_confirm = '0610'
+                if password != password_confirm:
+                    print('Passwords did not match!')
+                else:
+                    break
 
     # Initialize the dataset instance and (optionally) authentication handler.
     initialize_app(args[0], options.read_only, password, options.url_prefix)
