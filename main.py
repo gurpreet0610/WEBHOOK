@@ -1,4 +1,4 @@
-from databaseOP import faculty_information 
+from databaseOP import *
 
 
 def results(req):
@@ -9,6 +9,8 @@ def results(req):
         response=faculty_information(faculty)
     elif(action == 'who_faculty'):
         departments=parameters.get('departments')
-        faculty_dept_designation=parameters.get('faculty_dept_designation')    
+        faculty_dept_designation=parameters.get('faculty_dept_designation')
+    elif(action=="root_bpit.bpit.admission"):
+        response= admissionBPIT(parameters.get('departments'))
     # return a fulfillment response
     return {'fulfillmentText': response}
