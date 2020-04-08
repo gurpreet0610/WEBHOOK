@@ -16,4 +16,12 @@ def admissionBPIT(departments):
         return "There is no direct way to enrol in this course as it is the part of the BTech course curriculum."
     elif("Lateral Entry"):
         return "The students having a diploma are admitted directly in the second year as per the branch preference and their gradings."
-# print(faculty_information("Ms Palak Girdhar"))
+def bpit_infrastructure_facility(infrastruture_facilities):
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    cursorObj.execute("SELECT Description FROM infrafacility WHERE Facility = '{}';".format(infrastruture_facilities))
+    rows = cursorObj.fetchall()
+    return rows[0][0]
+
+
+# print(bpit_infrastructure_facility("class"))
