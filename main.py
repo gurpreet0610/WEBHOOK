@@ -14,5 +14,7 @@ def results(req):
         response= admissionBPIT(parameters.get('departments'))
     elif(action=="root_bpit.bpit.infrastructure_facility"):
         response=bpit_infrastructure_facility(parameters.get('infrastruture_facilities'))
+    elif(action=="root_faculty.faculty.faculty_info_by_name"):
+        pass
     # return a fulfillment response
-    return {'fulfillmentText': response}
+    return response
