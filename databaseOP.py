@@ -32,7 +32,7 @@ def departmentInfoCategory(departments,vision_mission_category):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
     cursorObj.execute("SELECT {} FROM info_departments WHERE Department = '{}';".format(vision_mission_category,departments))
-    rows = cursorObj.fetchall()     
+    rows = cursorObj.fetchall() 
     return {'fulfillmentText': rows[0][0]}
 def faculty_info_by_name(faculty_info_category,faculty_first_name,faculty_last_name):
     full_name =faculty_first_name + " " +faculty_last_name
