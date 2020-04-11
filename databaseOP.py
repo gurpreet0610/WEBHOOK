@@ -7,10 +7,11 @@ def faculty_general_by_name(faculty_first_name,faculty_last_name):
     cursorObj = con.cursor()
     cursorObj.execute("SELECT Description FROM facultyDetails WHERE Name = '{}';".format(full_name))
     rows = cursorObj.fetchall()
-    names = list(map(lambda x: x[0], cursorObj.description))
-    response=names +rows
-    return response
+    response=rows[0][0]
+    return {"fulfillmentText": response  }
     
+    
+
 
 def faculty_info_by_name(faculty_info_category,faculty_first_name,faculty_last_name):
     full_name =faculty_first_name + " " +faculty_last_name
