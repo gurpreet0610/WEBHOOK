@@ -21,5 +21,8 @@ def results(req):
         response=visionMissionBPIT(parameters.get('vision_mission_category'))
     elif(action=="root_faculty.faculty.faculty_general_by_name"):
         response=faculty_general_by_name(parameters.get('faculty_first_name'),parameters.get('faculty_last_name'))
+    elif(action=="root_department.department.about"):
+        response=departmentInfo(parameters.get('departments'))
+    
     # return a fulfillment response
     return response
