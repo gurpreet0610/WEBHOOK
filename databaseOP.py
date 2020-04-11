@@ -23,11 +23,14 @@ def faculty_info_by_name(faculty_info_category,faculty_first_name,faculty_last_n
     display_response =[["Name",faculty_info_category],[full_name,rows[0][0]]]
     
     
-    return {"fulfillmentText": speech_response,
+    return {"fulfillmentText": json.dumps(display_response),
                 "fulfillmentMessages": [
-                 {   "displayText": display_response,
-                    "texToSpeech": speech_response
-                 }
+                    {
+                    "text": {
+                        "text": [ 
+                            speech_response
+                        ]        }
+                    }
                 ]
                 }
     
@@ -57,4 +60,4 @@ def bpit_infrastructure_facility(infrastruture_facilities):
     return {'fulfillmentText': rows[0][0]}
 
 # print(bpit_infrastructure_facility("class"))
-faculty_info_by_name("Description","Dr Bhawna","Suri")
+# faculty_info_by_name("Description","Dr Bhawna","Suri")
