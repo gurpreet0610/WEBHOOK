@@ -1,6 +1,17 @@
 import sqlite3
 import json
 
+def faculty_general_by_name(faculty_first_name,faculty_last_name):
+    full_name =faculty_first_name +" "+faculty_last_name
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    cursorObj.execute("SELECT Description FROM facultyDetails WHERE Name = '{}';".format(full_name))
+    rows = cursorObj.fetchall()
+    names = list(map(lambda x: x[0], cursorObj.description))
+    response=names +rows
+    return response
+    
+
 def faculty_info_by_name(faculty_info_category,faculty_first_name,faculty_last_name):
     full_name =faculty_first_name + " " +faculty_last_name
     con = sqlite3.connect('data.sqlite')
@@ -20,8 +31,6 @@ def faculty_info_by_name(faculty_info_category,faculty_first_name,faculty_last_n
     elif(faculty_info_category=="Department"):
         speech_response=full_name+" belongs to " + rows[0][0] + " department"
     
-    display_response =[["Name",faculty_info_category],[full_name,rows[0][0]]]
-    display_response =json.dumps(display_response)
     return {"fulfillmentText": speech_response  }
     
 
