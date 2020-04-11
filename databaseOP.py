@@ -25,19 +25,12 @@ def faculty_info_by_name(faculty_info_category,faculty_first_name,faculty_last_n
     
     return {"fulfillmentText": speech_response,
                 "fulfillmentMessages": [
-                    {
-                    "text": {
-                        "text": [ json.dumps(display_response)
-                        
-                        ]        }
-                    }
+                 {   "displayText": display_response,
+                    "texToSpeech": speech_response
+                 }
                 ]
                 }
     
-
-    
-    
-
 
 def faculty_information(name):
     con = sqlite3.connect('data.sqlite')
