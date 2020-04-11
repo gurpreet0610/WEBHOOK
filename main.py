@@ -23,6 +23,10 @@ def results(req):
         response=faculty_general_by_name(parameters.get('faculty_first_name'),parameters.get('faculty_last_name'))
     elif(action=="root_department.department.about"):
         response=departmentInfo(parameters.get('departments'))
+    elif(action=="root_department.department.categories"):
+        response=departmentInfoCategory(parameters.get('departments'),parameters.get("vision_mission_category"))
+    elif(action=="root_faculty.faculty.faculty_name_by_dept_desg"):
+        response=faculty_name_by_dept_desg(parameters.get('Departments'),parameters.get('faculty_dept_designation'))
     
     # return a fulfillment response
     return response

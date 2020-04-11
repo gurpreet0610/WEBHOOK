@@ -1,6 +1,17 @@
 import sqlite3
 import json
 
+
+def faculty_name_by_dept_desg(department,designation):
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    cursorObj.execute("SELECT Name FROM facultyDetails WHERE Department = '{}' and Designation like '%{}%';".format(department,designation))
+    rows = cursorObj.fetchall()
+    if(len(rows)>1):
+       response="There are multiple "+designation+"s in "+department+" department for which the list is displayed on the screen"
+    else:
+        response=rows[0][0] +" is the " +designation+" of "+ department +" department "
+    
 def faculty_general_by_name(faculty_first_name,faculty_last_name):
     full_name =faculty_first_name +" "+faculty_last_name
     con = sqlite3.connect('data.sqlite')
@@ -9,8 +20,7 @@ def faculty_general_by_name(faculty_first_name,faculty_last_name):
     rows = cursorObj.fetchall()
     response=rows[0][0]
     return {"fulfillmentText": response  }
-    
-    
+        
 def departmentInfo(departments):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
@@ -18,6 +28,12 @@ def departmentInfo(departments):
     rows = cursorObj.fetchall()
     return {'fulfillmentText': rows[0][0]}
 
+def departmentInfoCategory(departments,vision_mission_category):
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    cursorObj.execute("SELECT {} FROM info_departments WHERE Department = '{}';".format(vision_mission_category,departments))
+    rows = cursorObj.fetchall()     
+    return {'fulfillmentText': rows[0][0]}
 def faculty_info_by_name(faculty_info_category,faculty_first_name,faculty_last_name):
     full_name =faculty_first_name + " " +faculty_last_name
     con = sqlite3.connect('data.sqlite')
@@ -39,7 +55,6 @@ def faculty_info_by_name(faculty_info_category,faculty_first_name,faculty_last_n
     
     return {"fulfillmentText": speech_response  }
     
-
 def visionMissionBPIT(vision_mission_category):
     rsp=""
     if(vision_mission_category == "vision"):
