@@ -11,7 +11,7 @@ def faculty_name_by_dept_desg(departments,designation):
        response="There are multiple "+designation+"s in "+departments+" department for which the list is displayed on the screen"
     else:
         response=rows[0][0] +" is the " +designation+" of "+ departments +" department "
-    return response
+    return {"fulfillmentText": response  }
     
 def faculty_general_by_name(faculty_first_name,faculty_last_name):
     full_name =faculty_first_name +" "+faculty_last_name
