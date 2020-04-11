@@ -5,7 +5,7 @@ import json
 def faculty_name_by_dept_desg(departments,designation):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
-    cursorObj.execute("SELECT Name FROM facultyDetails WHERE Department = '{}' and Designation like '{}%';".format(departments,designation))
+    cursorObj.execute("SELECT Name FROM facultyDetails WHERE Department = '{}' and Designation LIKE '{}%';".format(departments,designation))
     rows = cursorObj.fetchall()
     if(len(rows)>1):
        response="There are multiple "+designation+"s in "+departments+" department for which the list is displayed on the screen"
