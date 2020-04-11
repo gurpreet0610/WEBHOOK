@@ -23,7 +23,15 @@ def faculty_info_by_name(faculty_info_category,faculty_first_name,faculty_last_n
     display_response =[["Name",faculty_info_category],[full_name,rows[0][0]]]
     
     
-    return {"fulfillmentText": speech_response
+    return {"fulfillmentText": speech_response,
+                "fulfillmentMessages": [
+                    {
+                    "text": { "text": [  display_response ]        },
+                    "speech":{
+                        "speech" : speech_response
+                    }
+                    }
+                ]
                 }
     
 
