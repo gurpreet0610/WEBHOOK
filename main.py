@@ -17,6 +17,8 @@ def results(req):
     elif(action=="root_faculty.faculty.faculty_info_by_name"):
         response=faculty_info_by_name(parameters.get('faculty_info_category'),
                                       parameters.get('faculty_first_name'),parameters.get('faculty_last_name'))
-        pass
+    elif(action=="root_bpit.bpit.vision_mission"):
+        response=visionMissionBPIT(parameters.get('vision_mission_category'))
+
     # return a fulfillment response
     return response
