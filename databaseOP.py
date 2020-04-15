@@ -6,12 +6,10 @@ def navigation(room_id,req):
     cursorObj = con.cursor()
     cursorObj.execute("SELECT Stairs , Floor, Direction FROM RoomDetails WHERE RoomID = '{}';".format(room_id))
     rows = cursorObj.fetchall()
-    response = "Take the stairs at your "+rows[0][0]+" then after reaching the "+rows[0][1]+" take your "+rows[0][2] +" to reach the destination displayed on the screen"
-    try:
-        req=req.get('queryResult').get("outputContexts")[0].get('parameters').get("room_no.original")
-        print(req)
-    except:
-        pass
+    directions = "Take the stairs at your "+rows[0][0]+" then after reaching the "+rows[0][1]+" take your "+rows[0][2] +" to reach the destination displayed on the screen"
+    rname=req.get('queryResult').get("outputContexts")[0].get('parameters').get("room_no.original")
+    response="The directions for "+rname+" are as follows:-" +"\n"+ directions
+    print(response)
     return {"fulfillmentText": response  }
     
     
