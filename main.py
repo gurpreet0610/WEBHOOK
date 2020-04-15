@@ -27,6 +27,8 @@ def results(req):
         response=departmentInfoCategory(parameters.get('departments'),parameters.get("vision_mission_category"))
     elif(action=="root_faculty.faculty.faculty_name_by_dept_desg"):
         response=faculty_name_by_dept_desg(parameters.get('departments'),parameters.get('faculty_dept_designation'))
+    elif(action=="root_navigation.navigation.room"):
+        response=navigation(parameters.get('room_no'),req)
     
     # return a fulfillment response
     return response

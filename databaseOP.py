@@ -1,7 +1,22 @@
 import sqlite3
 import json
 
-
+def navigation(room_id,req):
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    cursorObj.execute("SELECT Stairs , Floor, Direction FROM RoomDetails WHERE RoomID = '{}';".format(room_id))
+    rows = cursorObj.fetchall()
+    response = "Take the stairs at your "+rows[0][0]+" then after reaching the "+rows[0][1]+" take your "+rows[0][2] +" to reach the destination displayed on the screen"
+    try:
+        print(req)
+        req=req.get('queryResult').get("outputContexts")
+        print(req)
+        print(req[0].get('room_no.original'))
+    except:
+        pass
+    return {"fulfillmentText": response  }
+    
+    
 def faculty_name_by_dept_desg(departments,designation):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
