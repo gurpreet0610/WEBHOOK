@@ -11,7 +11,7 @@ def navigation(room_id,req):
         print(req)
         req=req.get('queryResult').get("outputContexts")
         print(req)
-        print(req[0].get('room_no.original'))
+        print(req[0][0].get('room_no.original'))
     except:
         pass
     return {"fulfillmentText": response  }
