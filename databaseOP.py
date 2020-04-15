@@ -8,10 +8,8 @@ def navigation(room_id,req):
     rows = cursorObj.fetchall()
     response = "Take the stairs at your "+rows[0][0]+" then after reaching the "+rows[0][1]+" take your "+rows[0][2] +" to reach the destination displayed on the screen"
     try:
+        req=req.get('queryResult').get("outputContexts")[0].get('parameters').get("room_no.original")
         print(req)
-        req=req.get('queryResult').get("outputContexts")
-        print(req)
-        print(req[0][0].get('room_no.original'))
     except:
         pass
     return {"fulfillmentText": response  }
@@ -109,3 +107,5 @@ def bpit_infrastructure_facility(infrastruture_facilities):
 
 # print(bpit_infrastructure_facility("class"))
 # faculty_info_by_name("Description","Dr Bhawna","Suri")
+
+
