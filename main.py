@@ -33,6 +33,9 @@ def results(req):
         response=societyInfoName(parameters.get("societies"),parameters.get("society_category"))
     elif(action=="root_society.society.name_by_type"):
         response=societyInfoType(parameters.get("society_type"))
+    elif(action== "root_sports.sports.info"):
+        response=sportsInfo(parameters.get("sports_social_activities"))
+
 
 
     

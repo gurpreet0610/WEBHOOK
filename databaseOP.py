@@ -1,6 +1,15 @@
 import sqlite3
 import json
 
+
+def sportsInfo(sports_social_activities):
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    cursorObj.execute("SELECT Description FROM SportsActivities WHERE Name= '{}';".format(sports_social_activities))
+    rows = cursorObj.fetchall()     
+    return {'fulfillmentText': rows[0][0]}
+
+
 def societyInfoName(societies, society_category):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
