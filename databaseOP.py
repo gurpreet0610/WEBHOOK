@@ -1,6 +1,16 @@
 import sqlite3
 import json
 
+def societyInfoName(societies, society_category):
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    if(society_category == ""):
+        cursorObj.execute("SELECT Description FROM SocietyDetails WHERE Name= '{}';".format(societies))
+    else:
+        cursorObj.execute("SELECT '{}' FROM SocietyDetails WHERE Name= '{}';".format(society_category,societies))
+    rows = cursorObj.fetchall()     
+    return {'fulfillmentText': rows[0][0]}
+
 def navigation(room_id,req):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
@@ -10,8 +20,7 @@ def navigation(room_id,req):
     rname=req.get('queryResult').get("outputContexts")[0].get('parameters').get("room_no.original")
     response="The directions for "+rname+" are as follows:-" +"\n"+ directions
     return {"fulfillmentText": response  }
-    
-    
+
 def faculty_name_by_dept_desg(departments,designation):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()

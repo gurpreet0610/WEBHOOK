@@ -28,7 +28,10 @@ def results(req):
     elif(action=="root_faculty.faculty.faculty_name_by_dept_desg"):
         response=faculty_name_by_dept_desg(parameters.get('departments'),parameters.get('faculty_dept_designation'))
     elif(action=="root_navigation.navigation.room"):
-        response=navigation(parameters.get('room_no'),req)
+        response=navigation(parameters.get('room_no'))
+    elif(action=="root_society.society.description_by_name"):
+        response=societyInfoName(parameters.get("societies"),parameters.get("society_category"))
+
     
     # return a fulfillment response
     return response
