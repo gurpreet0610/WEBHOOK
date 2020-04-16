@@ -4,6 +4,7 @@ from databaseOP import *
 def results(req):
     action = req.get('queryResult').get('action')
     parameters=req.get('queryResult').get('parameters')
+    response={'fulfillmentText': ''}
     if(action == 'faculty_information'):
         faculty=parameters.get('faculty')
         response=faculty_information(faculty)
@@ -35,9 +36,6 @@ def results(req):
         response=societyInfoType(parameters.get("society_type"))
     elif(action== "root_sports.sports.info"):
         response=sportsInfo(parameters.get("sports_social_activities"))
-
-
-
     
     # return a fulfillment response
     return response
