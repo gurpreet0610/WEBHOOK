@@ -5,11 +5,23 @@ def societyInfoName(societies, society_category):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
     if(society_category == ""):
-        cursorObj.execute("SELECT Description FROM SocietyDetails WHERE Name= '{}';".format(societies))
+        cursorObj.execute("SELECT Descirption FROM SocietyDetails WHERE Name= '{}';".format(societies))
     else:
         cursorObj.execute("SELECT '{}' FROM SocietyDetails WHERE Name= '{}';".format(society_category,societies))
     rows = cursorObj.fetchall()     
     return {'fulfillmentText': rows[0][0]}
+
+def societyInforType(society_type):
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    cursorObj.execute("SELECT Name, Descirption FROM SocietyDetails WHERE Type LIKE  '%{}%';".format(society_type))
+    rows = cursorObj.fetchall()
+    if(len(rows)>1):
+        return {"fulfillmentText": "There are multiple socities working in "\
+                +society_type+" and the list is displayed on your screen"}
+    else:
+        return{"fulfillmentText" : rows[0][0]+" is working in the "+society_type+" domain. "+ rows[0][1]}
+
 
 def navigation(room_id,req):
     con = sqlite3.connect('data.sqlite')
