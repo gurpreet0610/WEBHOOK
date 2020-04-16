@@ -11,7 +11,7 @@ def societyInfoName(societies, society_category):
     rows = cursorObj.fetchall()     
     return {'fulfillmentText': rows[0][0]}
 
-def societyInforType(society_type):
+def societyInfoType(society_type):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
     cursorObj.execute("SELECT Name, Descirption FROM SocietyDetails WHERE Type LIKE  '%{}%';".format(society_type))
