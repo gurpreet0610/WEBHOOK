@@ -38,6 +38,7 @@ def results(req):
         response=sportsInfo(parameters.get("sports_social_activities"))
     elif(action== "root_faculty.faculty_general_by_dept_desg"):
         response=faculty_general_dept_designation(parameters.get("departments"),parameters.get("faculty_dept_designation"))
- 
+    elif(action== "root_faculty.faculty.snr_faculty_info_by_desg"):
+        response=snr_faculty_general_dept_designation(parameters.get("faculty_info_category"),parameters.get( "faculty_not_dept_designation"))
     # return a fulfillment response
     return response

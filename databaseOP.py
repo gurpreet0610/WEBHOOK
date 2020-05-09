@@ -2,6 +2,13 @@ import sqlite3
 import json
 
 
+def snr_faculty_general_dept_designation(category,designation):
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    cursorObj.execute("SELECT {} FROM FacultyDetails WHERE Designation LIKE  '%{}%';".format(category,designation))
+    rows = cursorObj.fetchall()
+    return {'fulfillmentText': rows[0][0]}
+
 def faculty_general_dept_designation(departments,designation):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
@@ -13,7 +20,6 @@ def faculty_general_dept_designation(departments,designation):
         response=rows[0][0] +" is the " +designation+" of "+ departments +" department "
     return {"fulfillmentText": response  }
     
-
 def sportsInfo(sports_social_activities):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
