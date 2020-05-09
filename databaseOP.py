@@ -2,13 +2,24 @@ import sqlite3
 import json
 
 
+def faculty_general_dept_designation(departments,designation):
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    cursorObj.execute("SELECT * FROM FacultyDetails where Department LIKE  '%{}%' and Designation LIKE '%{}%';".format(departments,designation))
+    rows = cursorObj.fetchall()
+    if(len(rows)>1):
+        response="There are multiple "+designation+"s in "+departments+" department for which the list is displayed on the screen"
+    else:
+        response=rows[0][0] +" is the " +designation+" of "+ departments +" department "
+    return {"fulfillmentText": response  }
+    
+
 def sportsInfo(sports_social_activities):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
     cursorObj.execute("SELECT Description FROM SportsActivities WHERE Name= '{}';".format(sports_social_activities))
     rows = cursorObj.fetchall()     
     return {'fulfillmentText': rows[0][0]}
-
 
 def societyInfoName(societies, society_category):
     con = sqlite3.connect('data.sqlite')
@@ -45,7 +56,7 @@ def navigation(room_id,req):
 def faculty_name_by_dept_desg(departments,designation):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
-    cursorObj.execute("SELECT Name FROM facultyDetails WHERE Department = '{}' and Designation LIKE '%{}%';".format(departments,designation))
+    cursorObj.execute("SELECT Name FROM FacultyDetails WHERE Department = '{}' and Designation LIKE '%{}%';".format(departments,designation))
     rows = cursorObj.fetchall()
     if(len(rows)>1):
        response="There are multiple "+designation+"s in "+departments+" department for which the list is displayed on the screen"
@@ -57,7 +68,7 @@ def faculty_general_by_name(faculty_first_name,faculty_last_name):
     full_name =faculty_first_name +" "+faculty_last_name
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
-    cursorObj.execute("SELECT Description FROM facultyDetails WHERE Name = '{}';".format(full_name))
+    cursorObj.execute("SELECT Description FROM FacultyDetails WHERE Name = '{}';".format(full_name))
     rows = cursorObj.fetchall()
     response=rows[0][0]
     return {"fulfillmentText": response  }
@@ -111,7 +122,7 @@ def visionMissionBPIT(vision_mission_category):
 def faculty_information(name):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
-    cursorObj.execute("SELECT Description FROM facultyDetails WHERE Name = '{}';".format(name))
+    cursorObj.execute("SELECT Description FROM FacultyDetails WHERE Name = '{}';".format(name))
     rows = cursorObj.fetchall()
     return {'fulfillmentText': rows[0][0]}
 def admissionBPIT(departments):

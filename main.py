@@ -36,6 +36,8 @@ def results(req):
         response=societyInfoType(parameters.get("society_type"))
     elif(action== "root_sports.sports.info"):
         response=sportsInfo(parameters.get("sports_social_activities"))
-    
+    elif(action== "root_faculty.faculty_general_by_dept_desg"):
+        response=faculty_general_dept_designation(parameters.get("departments"),parameters.get("faculty_dept_designation"))
+ 
     # return a fulfillment response
     return response
