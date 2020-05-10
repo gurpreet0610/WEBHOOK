@@ -203,11 +203,13 @@ def faculty_info_by_name(category,faculty_first_name,faculty_last_name):
 def visionMissionBPIT(vision_mission_category):
     rsp=""
     if(vision_mission_category == "vision"):
-        rsp="Our vision is to establish a leading global centre of excellence in multidisciplinary education, training and research in the area of Engineering, Technology and Management. To produce technologically competent and ethically sound professionals who excel in their field and dedicate themselves to the service of mankind."
+        rsp="Our vision is to establish a leading global centre of excellence in multidisciplinary education, training and research in the area of Engineering, Technology and Management."
+    # To produce technologically competent and ethically sound professionals who excel in their field and dedicate themselves to the service of mankind    
     elif(vision_mission_category == "mission"):
         rsp="Our mission is to bridge the knowledge gaps, promote research culture among faculty and students and to honour the commitment towards social and moral values."
     elif(vision_mission_category == "vision and mission"):
-        rsp="Our aim is to provide industry technologically sound, morally & emotionally strong professionals who practice commitment to their profession by imbibing corporate and research culture amongst our faculty and students so that they honour commitment towards social and moral values."
+        rsp="Our aim is to provide industry technologically sound, morally & emotionally strong professionals."
+    # who practice commitment to their profession by imbibing corporate and research culture amongst our faculty and students so that they honour commitment towards social and moral values
     elif(vision_mission_category == "quality policy"):
         rsp="We strive to breed excellence in all endeavours and impart quality education and training among our students and faculties matching the international standards."
     return {'fulfillmentText': rsp}
