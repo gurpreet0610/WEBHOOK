@@ -19,7 +19,7 @@ def faculty_name_expertise(department,expertise):
         cursorObj.execute("SELECT Name,Department,Designation FROM FacultyDetails WHERE Expertise LIKE '%{}%' and Department LIKE '%{}%';".format(expertise,department))
     rows = cursorObj.fetchall()
     if(len(rows)==0):
-        sppech_response="Sorry, currently the faculty with expertise "+expertise+" is not found in my records."
+        speech_response="Sorry, currently the faculty with expertise "+expertise+" is not found in my records."
     elif(len(rows)==1):
         name=rows[0][0]
         department=rows[0][1]
