@@ -28,7 +28,7 @@ def faculty_name_expertise(department,expertise):
     elif(len(rows)>=2 and len(rows)<=3):
         speech_response="Faculties expert in "+expertise+" are "+(', '.join(rows[x][0] for x in range(0,len(rows)-1)))+" and "+rows[len(rows)-1][0]
     else:
-        speech_response="Faculties expert in "+expertise+" are "+(', '.join(rows[x][0] for x in range(0,len(rows))))+", etc."
+        speech_response="Faculties expert in "+expertise+" are "+(', '.join(rows[x][0] for x in range(0,3)))+", etc."
     return {'fulfillmentText': speech_response} 
 
 def faculty_info_dept_designation(category,department,designation):
