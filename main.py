@@ -33,7 +33,18 @@ def results(req):
         response=sportsInfo(parameters.get("sports_social_activities"))
     elif(action== "root_faculty.faculty_general_by_dept_desg"):
         response=faculty_general_dept_designation(parameters.get("departments"),parameters.get("faculty_dept_designation"))
-    elif(action== "root_faculty.faculty.snr_faculty_info_by_desg"):
+    elif(action=="root_faculty.faculty.snr_faculty_info_by_desg"):
         response=snr_faculty_info_designation(parameters.get("faculty_info_category"),parameters.get( "faculty_not_dept_designation"))
+    elif(action=="root_faculty.faculty.snr_faculty_general_by_desg"):
+        response=snr_faculty_general_designation(parameters.get("faculty_not_dept_designation"))
+    elif(action=="root_faculty.faculty.faculty_info_by_dept"):
+        response=faculty_info_department(parameters.get("faculty_info_category"),parameters.get('departments'))
+    elif(action=="root_faculty.faculty.faculty_info_by_dept_desg"):
+        response=faculty_info_dept_designation(parameters.get("faculty_info_category"),parameters.get('departments'),parameters.get("faculty_dept_designation"))
+    elif(action=="root_faculty.faculty.faculty_name_by_expertise"):
+        response=faculty_name_expertise(parameters.get("faculty_expertise"))
+    elif(action=="root_faculty.faculty.faculty_room_navigation"):
+        response=faculty_room_navigation(parameters.get("Faculty_First_Name	"),parameters.get("Faculty_Last_Name"),req)
+
     # return a fulfillment response
     return response
