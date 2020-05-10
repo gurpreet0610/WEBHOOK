@@ -25,7 +25,7 @@ def faculty_name_expertise(department,expertise):
         department=rows[0][1]
         designation=rows[0][2].split(',')[0]
         speech_response=rows[0][0]+", the "+designation+" of "+department+" department is expert in "+expertise
-    elif(len(rows)>2 and len(rows)<=3):
+    elif(len(rows)>=2 and len(rows)<=3):
         speech_response="Faculties expert in "+expertise+" are "+(', '.join(rows[x][0] for x in range(0,len(rows)-1)))+" and "+rows[len(rows)-1][0]
     else:
         speech_response="Faculties expert in "+expertise+" are "+(', '.join(rows[x][0] for x in range(0,len(rows))))+", etc."
