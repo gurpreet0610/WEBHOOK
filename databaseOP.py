@@ -1,37 +1,93 @@
 import sqlite3
 import json
 
+def faculty_room_navigation(first_name,last_name,req):
+    full_name =faculty_first_name +" "+faculty_last_name
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    cursorObj.execute("SELECT Room,RoomID FROM FacultyDetails WHERE Name = '{}';".format(full_name))
+    rows = cursorObj.fetchall()
+    room=rows[0][0]
+    return navigation(room,req)
 
-    # if faculty_info_category =="Description":
-    #     cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Name = '{}';".format(faculty_info_category+"_Speech",full_name))
-    # else:
-    #     cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Name = '{}';".format(faculty_info_category,full_name))
-        
-    # rows = cursorObj.fetchall()
-    # if(faculty_info_category=="Description"):
-    #     speech_response=rows[0][0]
-    # elif(faculty_info_category=="Room"):
-    #     speech_response=full_name+" is usually present in room " + rows[0][0]
-    # elif(faculty_info_category=="Expertise"):
-    #     speech_response=full_name+" is specialized in " + rows[0][0]
-    # elif(faculty_info_category=="Experience"):
-    #     speech_response=full_name+" is having an experience of more than " + rows[0][0]
-    # elif(faculty_info_category=="Designation"):
-    #     speech_response=full_name+" is the " + rows[0][0]
-    # elif(faculty_info_category=="Department"):
-    #     speech_response=full_name+" belongs to " + rows[0][0] + " department"
-    
-    # return {"fulfillmentText": speech_response  }
+def faculty_name_expertise(expertise):
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    cursorObj.execute("SELECT Name,Department,Designation FROM FacultyDetails WHERE Expertise LIKE '%{}%';".format(expertise))
+    rows = cursorObj.fetchall()
+    if(len(rows)>1):
+        name=rows[0][0]
+        department=rows[0][1]
+        designation=rows[0][2].split(',')[0]
+        speech_response=rows[0][0]+", the "+designation+" of "+department+" department is expert in "+expertise
+    else:
+        speech_response="Following are the names of faculty expert in "+expertise+": \n"+'\n'.join([rows[x][0] for x in range(len(rows))])
+    return {'fulfillmentText': speech_response}    
+
+def faculty_info_dept_designation(category,department,designation):
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    if category =="Description":
+        cursorObj.execute("SELECT {},Name FROM FacultyDetails WHERE Department LIKE '%{}%' and Designation LIKE '%{}%';".format(category+"_Speech",department,designation))
+    else:
+        cursorObj.execute("SELECT {},Name FROM FacultyDetails WHERE Department LIKE '%{}%';".format(category,department,designation))   
+    rows = cursorObj.fetchall()
+    full_name=rows[0][1]
+    if(category=="Description"):
+        speech_response=rows[0][0]
+    elif(category=="Room"):
+        speech_response=full_name+" is present in room " + rows[0][0]
+    elif(category=="Expertise"):
+        speech_response=full_name+" is specialized in " + rows[0][0]
+    elif(category=="Experience"):
+        speech_response=full_name+" is having an experience of more than " + rows[0][0]
+    elif(category=="Designation"):
+        speech_response=full_name+" is the " + rows[0][0] + " of BPIT"
+    elif(category=="Department"):
+        speech_response=full_name+" belongs to " + rows[0][0] + " department"
+    return {'fulfillmentText': speech_response}
+
+def faculty_info_department(category,department):
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    if category =="Description":
+        cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Department LIKE '%{}%';".format(category+"_Speech",department))
+    else:
+        cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Department LIKE '%{}%';".format(category,department))   
+    rows = cursorObj.fetchall()
+    #to be added
+    return {'fulfillmentText': speech_response}
+
+def snr_faculty_general_designation(designation):
+    con = sqlite3.connect('data.sqlite')
+    cursorObj = con.cursor()
+    cursorObj.execute("SELECT * FROM FacultyDetails where Designation LIKE '%{}%';".format(designation))
+    rows = cursorObj.fetchall()
+    response=rows[0][7]
+    return {"fulfillmentText": response  }
+
 def snr_faculty_info_designation(category,designation):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
     if category =="Description":
-        cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Name = '{}';".format(faculty_info_category+"_Speech",full_name))
+        cursorObj.execute("SELECT {},Name  FROM FacultyDetails WHERE Designation LIKE '%{}%';".format(category+"_Speech",designation))
     else:
-        cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Name = '{}';".format(faculty_info_category,full_name))
-        
+        cursorObj.execute("SELECT {},Name  FROM FacultyDetails WHERE Designation LIKE '%{}%';".format(category,designation))   
     rows = cursorObj.fetchall()
-    return {'fulfillmentText': rows[0][0]}
+    full_name=rows[0][1]
+    if(category=="Description"):
+        speech_response=rows[0][0]
+    elif(category=="Room"):
+        speech_response=full_name+" is present in room " + rows[0][0]
+    elif(category=="Expertise"):
+        speech_response=full_name+" is specialized in " + rows[0][0]
+    elif(category=="Experience"):
+        speech_response=full_name+" is having an experience of more than " + rows[0][0]
+    elif(category=="Designation"):
+        speech_response=full_name+" is the " + rows[0][0] + " of BPIT"
+    elif(category=="Department"):
+        speech_response=full_name+" belongs to " + rows[0][0] + " department"
+    return {'fulfillmentText': speech_response}
 
 def faculty_general_dept_designation(departments,designation):
     con = sqlite3.connect('data.sqlite')
@@ -41,7 +97,7 @@ def faculty_general_dept_designation(departments,designation):
     if(len(rows)>1):
         response="There are multiple "+designation+"s in "+departments+" department for which the list is displayed on the screen"
     else:
-        response=rows[0][0] +" is the " +designation+" of "+ departments +" department "
+        response=rows[0][7]
     return {"fulfillmentText": response  }
     
 def sportsInfo(sports_social_activities):
@@ -119,27 +175,27 @@ def departmentInfoCategory(departments,vision_mission_category):
     rows = cursorObj.fetchall() 
     return {'fulfillmentText': rows[0][0]}
 
-def faculty_info_by_name(faculty_info_category,faculty_first_name,faculty_last_name):
+def faculty_info_by_name(category,faculty_first_name,faculty_last_name):
     full_name =faculty_first_name + " " +faculty_last_name
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
-    if faculty_info_category =="Description":
-        cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Name = '{}';".format(faculty_info_category+"_Speech",full_name))
+    if category =="Description":
+        cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Name = '{}';".format(category+"_Speech",full_name))
     else:
-        cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Name = '{}';".format(faculty_info_category,full_name))
+        cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Name = '{}';".format(category,full_name))
         
     rows = cursorObj.fetchall()
-    if(faculty_info_category=="Description"):
+    if(category=="Description"):
         speech_response=rows[0][0]
-    elif(faculty_info_category=="Room"):
+    elif(category=="Room"):
         speech_response=full_name+" is usually present in room " + rows[0][0]
-    elif(faculty_info_category=="Expertise"):
+    elif(category=="Expertise"):
         speech_response=full_name+" is specialized in " + rows[0][0]
-    elif(faculty_info_category=="Experience"):
+    elif(category=="Experience"):
         speech_response=full_name+" is having an experience of more than " + rows[0][0]
-    elif(faculty_info_category=="Designation"):
+    elif(category=="Designation"):
         speech_response=full_name+" is the " + rows[0][0]
-    elif(faculty_info_category=="Department"):
+    elif(category=="Department"):
         speech_response=full_name+" belongs to " + rows[0][0] + " department"
     
     return {"fulfillmentText": speech_response  }
