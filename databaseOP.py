@@ -2,10 +2,34 @@ import sqlite3
 import json
 
 
-def snr_faculty_general_dept_designation(category,designation):
+    # if faculty_info_category =="Description":
+    #     cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Name = '{}';".format(faculty_info_category+"_Speech",full_name))
+    # else:
+    #     cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Name = '{}';".format(faculty_info_category,full_name))
+        
+    # rows = cursorObj.fetchall()
+    # if(faculty_info_category=="Description"):
+    #     speech_response=rows[0][0]
+    # elif(faculty_info_category=="Room"):
+    #     speech_response=full_name+" is usually present in room " + rows[0][0]
+    # elif(faculty_info_category=="Expertise"):
+    #     speech_response=full_name+" is specialized in " + rows[0][0]
+    # elif(faculty_info_category=="Experience"):
+    #     speech_response=full_name+" is having an experience of more than " + rows[0][0]
+    # elif(faculty_info_category=="Designation"):
+    #     speech_response=full_name+" is the " + rows[0][0]
+    # elif(faculty_info_category=="Department"):
+    #     speech_response=full_name+" belongs to " + rows[0][0] + " department"
+    
+    # return {"fulfillmentText": speech_response  }
+def snr_faculty_info_designation(category,designation):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
-    cursorObj.execute("SELECT {} FROM FacultyDetails WHERE Designation LIKE  '%{}%';".format(category,designation))
+    if category =="Description":
+        cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Name = '{}';".format(faculty_info_category+"_Speech",full_name))
+    else:
+        cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Name = '{}';".format(faculty_info_category,full_name))
+        
     rows = cursorObj.fetchall()
     return {'fulfillmentText': rows[0][0]}
 
@@ -48,7 +72,6 @@ def societyInfoType(society_type):
     else:
         return{"fulfillmentText" : rows[0][0]+" is working in the "+society_type+" domain. "+ rows[0][1]}
 
-
 def navigation(room_id,req):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
@@ -62,7 +85,7 @@ def navigation(room_id,req):
 def faculty_name_by_dept_desg(departments,designation):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
-    cursorObj.execute("SELECT Name FROM FacultyDetails WHERE Department = '{}' and Designation LIKE '%{}%';".format(departments,designation))
+    cursorObj.execute("SELECT Name FROM FacultyDetails WHERE Department LIKE '%{}%' and Designation LIKE '%{}%';".format(departments,designation))
     rows = cursorObj.fetchall()
     if(len(rows)>1):
        response="There are multiple "+designation+"s in "+departments+" department for which the list is displayed on the screen"
@@ -74,7 +97,7 @@ def faculty_general_by_name(faculty_first_name,faculty_last_name):
     full_name =faculty_first_name +" "+faculty_last_name
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
-    cursorObj.execute("SELECT Description FROM FacultyDetails WHERE Name = '{}';".format(full_name))
+    cursorObj.execute("SELECT Description_Speech FROM FacultyDetails WHERE Name = '{}';".format(full_name))
     rows = cursorObj.fetchall()
     response=rows[0][0]
     return {"fulfillmentText": response  }
@@ -82,21 +105,29 @@ def faculty_general_by_name(faculty_first_name,faculty_last_name):
 def departmentInfo(departments):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
-    cursorObj.execute("SELECT About FROM info_departments WHERE Department = '{}';".format(departments))
+    cursorObj.execute("SELECT About_Speech FROM InfoDepartments WHERE Department = '{}';".format(departments))
     rows = cursorObj.fetchall()
     return {'fulfillmentText': rows[0][0]}
 
 def departmentInfoCategory(departments,vision_mission_category):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
-    cursorObj.execute("SELECT {} FROM info_departments WHERE Department = '{}';".format(vision_mission_category,departments))
+    if vision_mission_category in ["Achievement", "Resources", "HOD"]:
+        cursorObj.execute("SELECT {} FROM InfoDepartments WHERE Department = '{}';".format(vision_mission_category,departments))
+    else:
+        cursorObj.execute("SELECT {} FROM InfoDepartments WHERE Department = '{}';".format(vision_mission_category+"_Speech",departments))
     rows = cursorObj.fetchall() 
     return {'fulfillmentText': rows[0][0]}
+
 def faculty_info_by_name(faculty_info_category,faculty_first_name,faculty_last_name):
     full_name =faculty_first_name + " " +faculty_last_name
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
-    cursorObj.execute("SELECT {} FROM facultyDetails WHERE Name = '{}';".format(faculty_info_category,full_name))
+    if faculty_info_category =="Description":
+        cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Name = '{}';".format(faculty_info_category+"_Speech",full_name))
+    else:
+        cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Name = '{}';".format(faculty_info_category,full_name))
+        
     rows = cursorObj.fetchall()
     if(faculty_info_category=="Description"):
         speech_response=rows[0][0]
@@ -107,7 +138,7 @@ def faculty_info_by_name(faculty_info_category,faculty_first_name,faculty_last_n
     elif(faculty_info_category=="Experience"):
         speech_response=full_name+" is having an experience of more than " + rows[0][0]
     elif(faculty_info_category=="Designation"):
-        speech_response=full_name+" is " + rows[0][0]
+        speech_response=full_name+" is the " + rows[0][0]
     elif(faculty_info_category=="Department"):
         speech_response=full_name+" belongs to " + rows[0][0] + " department"
     
@@ -125,12 +156,6 @@ def visionMissionBPIT(vision_mission_category):
         rsp="We strive to breed excellence in all endeavours and impart quality education and training among our students and faculties matching the international standards."
     return {'fulfillmentText': rsp}
 
-def faculty_information(name):
-    con = sqlite3.connect('data.sqlite')
-    cursorObj = con.cursor()
-    cursorObj.execute("SELECT Description FROM FacultyDetails WHERE Name = '{}';".format(name))
-    rows = cursorObj.fetchall()
-    return {'fulfillmentText': rows[0][0]}
 def admissionBPIT(departments):
     rsp=""
     if(departments in ["Computer Science and Engineering", "Information Technology", "Electronics and Communication Engineering", "Electrical and Electronics Engineering" , "Bachelor of Technology"]):
@@ -142,10 +167,11 @@ def admissionBPIT(departments):
     elif(departments == "Lateral Entry"):
         rsp="The students having a diploma are admitted directly in the second year as per the branch preference and their gradings."
     return {'fulfillmentText': rsp}
+
 def bpit_infrastructure_facility(infrastruture_facilities):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
-    cursorObj.execute("SELECT Description FROM infrafacility WHERE Facility = '{}';".format(infrastruture_facilities))
+    cursorObj.execute("SELECT Description FROM InfraFacility WHERE Facility = '{}';".format(infrastruture_facilities))
     rows = cursorObj.fetchall()
     return {'fulfillmentText': rows[0][0]}
 

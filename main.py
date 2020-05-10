@@ -5,13 +5,8 @@ def results(req):
     action = req.get('queryResult').get('action')
     parameters=req.get('queryResult').get('parameters')
     response={'fulfillmentText': ''}
-    if(action == 'faculty_information'):
-        faculty=parameters.get('faculty')
-        response=faculty_information(faculty)
-    elif(action == 'who_faculty'):
-        departments=parameters.get('departments')
-        faculty_dept_designation=parameters.get('faculty_dept_designation')
-    elif(action=="root_bpit.bpit.admission"):
+
+    if(action=="root_bpit.bpit.admission"):
         response= admissionBPIT(parameters.get('departments'))
     elif(action=="root_bpit.bpit.infrastructure_facility"):
         response=bpit_infrastructure_facility(parameters.get('infrastruture_facilities'))
@@ -39,6 +34,6 @@ def results(req):
     elif(action== "root_faculty.faculty_general_by_dept_desg"):
         response=faculty_general_dept_designation(parameters.get("departments"),parameters.get("faculty_dept_designation"))
     elif(action== "root_faculty.faculty.snr_faculty_info_by_desg"):
-        response=snr_faculty_general_dept_designation(parameters.get("faculty_info_category"),parameters.get( "faculty_not_dept_designation"))
+        response=snr_faculty_info_designation(parameters.get("faculty_info_category"),parameters.get( "faculty_not_dept_designation"))
     # return a fulfillment response
     return response
