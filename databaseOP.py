@@ -7,7 +7,7 @@ def faculty_room_navigation(first_name,last_name,req):
     cursorObj = con.cursor()
     cursorObj.execute("SELECT Room,RoomID FROM FacultyDetails WHERE Name = '{}';".format(full_name))
     rows = cursorObj.fetchall()
-    room=rows[0][0]
+    room=rows[0][1]
     return navigation(room,req)
 
 def faculty_name_expertise(expertise):
