@@ -15,7 +15,7 @@ def faculty_name_expertise(expertise):
     cursorObj = con.cursor()
     cursorObj.execute("SELECT Name,Department,Designation FROM FacultyDetails WHERE Expertise LIKE '%{}%';".format(expertise))
     rows = cursorObj.fetchall()
-    if(len(rows)>1):
+    if(len(rows)==1):
         name=rows[0][0]
         department=rows[0][1]
         designation=rows[0][2].split(',')[0]
