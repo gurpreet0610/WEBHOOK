@@ -57,12 +57,24 @@ def faculty_info_dept_designation(category,department,designation):
 def faculty_info_department(category,department):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
-    if category =="Description":
+    if category == "Description":
         cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Department LIKE '%{}%';".format(category+"_Speech",department))
     else:
         cursorObj.execute("SELECT {}  FROM FacultyDetails WHERE Department LIKE '%{}%';".format(category,department))   
     rows = cursorObj.fetchall()
-    #to be added
+    if(category in ["Designation","Room","Experience"]):
+        speech_response="Every faculty in "+department+" department has their own "+category+". Kindly try asking for a specific faculty."
+    elif(category=="Department"):
+        speech_response="Faculties belong to "+department
+    elif(category=="Description"):
+        speech_response="Our "+department+" faculty is highly professional and hard working. They are always trying to help their students in all ways." 
+    else:
+        results = ', '.join([rows[x][0] for x in range(len(rows))])
+        results = ', '.join(results.split(', ')[0:3])
+        if(category=="Name"):
+            speech_response="The faculty of "+department+" department includes "+results+", etc."
+        else:
+            speech_response="The "+department+" department faculty's "+category+" includes "+results+", etc."
     return {'fulfillmentText': speech_response}
 
 def snr_faculty_general_designation(designation):
