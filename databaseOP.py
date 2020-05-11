@@ -81,19 +81,20 @@ def snr_faculty_info_designation(category,designation):
     else:
         cursorObj.execute("SELECT {},Name  FROM FacultyDetails WHERE Designation LIKE '%{}%';".format(category,designation))   
     rows = cursorObj.fetchall()
+    print(rows)
     full_name=rows[0][1]
-    if(rows[0][0]==""):
-        speech_response="Sorry, I could  not find the "+category+" of "+Name+", the "+designation+" of BPIT in my records"
+    if(rows[0][0]==None):
+        speech_response="Sorry, I could  not find the "+category+" of "+full_name+", the "+designation+" of BPIT in my records"
         return {'fulfillmentText': speech_response}
     else:
         if(category=="Description"):
             speech_response=rows[0][0]
         elif(category=="Room"):
-            speech_response=full_name+", the "+designation+" of BPIT is present in room " + rows[0][0]
+            speech_response=full_name+", the "+designation+" of BPIT is present in room number " + str(rows[0][0])
         elif(category=="Expertise"):
             speech_response=full_name+", the "+designation+" of BPIT is specialized in " + rows[0][0]
         elif(category=="Experience"):
-            speech_response=full_name+", the "+designation+" of BPIT is having an experience of more than " + rows[0][0]
+            speech_response=full_name+", the "+designation+" of BPIT is having an experience of more than " + str(rows[0][0])
         elif(category=="Designation"):
             speech_response=full_name+" is the "+designation+" of BPIT "
         elif(category=="Department"):
