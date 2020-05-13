@@ -1,14 +1,38 @@
 import sqlite3
 import json
 
-def faculty_room_navigation(first_name,last_name,req):
-    full_name =faculty_first_name +" "+faculty_last_name
-    con = sqlite3.connect('data.sqlite')
-    cursorObj = con.cursor()
-    cursorObj.execute("SELECT Room,RoomID FROM FacultyDetails WHERE Name = '{}';".format(full_name))
-    rows = cursorObj.fetchall()
-    room=rows[0][1]
-    return navigation(room,req)
+
+def navigation(room_id,req):
+    try:
+        con = sqlite3.connect('data.sqlite')
+        cursorObj = con.cursor()
+        cursorObj.execute("SELECT Floor, Direction FROM RoomDetails WHERE RoomID = '{}';".format(room_id))
+        rows = cursorObj.fetchall()
+        rname=req.get('queryResult').get("outputContexts")[0].get('parameters').get("room_no.original")
+        response = "After reaching the "+rows[0][0]+" take your "+rows[0][1] +" to reach the "+rname+" as displayed on your screen"
+    except Exception as e:
+        print(e)
+        response = "Sorry, I am not able to find the room in my record."
+    return {"fulfillmentText": response  }
+
+def faculty_room_navigation(first_name,last_name):
+    try:   
+        full_name =first_name +" "+last_name
+        con = sqlite3.connect('data.sqlite')
+        cursorObj = con.cursor()
+        cursorObj.execute("SELECT Room,RoomID FROM FacultyDetails WHERE Name = '{}';".format(full_name))
+        rows = cursorObj.fetchall()
+        room=rows[0][1]
+    except:
+        room=-1
+    try:
+        cursorObj.execute("SELECT Floor, Direction FROM RoomDetails WHERE RoomID = '{}';".format(room))
+        rows = cursorObj.fetchall()
+        rname="room of "+full_name
+        response = "After reaching the "+rows[0][0]+", take your "+rows[0][1] +" to reach the "+rname+" as displayed on your screen"
+    except Exception as e:
+        response = "Sorry, I am not able to find the room of "+full_name+" in my record."
+    return {"fulfillmentText": response  }
 
 def faculty_name_expertise(department,expertise):
     con = sqlite3.connect('data.sqlite')
@@ -152,16 +176,6 @@ def societyInfoType(society_type):
     else:
         return{"fulfillmentText" : rows[0][0]+" is working in the "+society_type+" domain. "+ rows[0][1]}
 
-def navigation(room_id,req):
-    con = sqlite3.connect('data.sqlite')
-    cursorObj = con.cursor()
-    cursorObj.execute("SELECT Stairs , Floor, Direction FROM RoomDetails WHERE RoomID = '{}';".format(room_id))
-    rows = cursorObj.fetchall()
-    directions = "Take the stairs at your "+rows[0][0]+" then after reaching the "+rows[0][1]+" take your "+rows[0][2] +" to reach the destination displayed on the screen"
-    rname=req.get('queryResult').get("outputContexts")[0].get('parameters').get("room_no.original")
-    response="The directions for "+rname+" are as follows:-" +"\n"+ directions
-    return {"fulfillmentText": response  }
-
 def faculty_name_by_dept_desg(departments,designation):
     con = sqlite3.connect('data.sqlite')
     cursorObj = con.cursor()
@@ -257,7 +271,6 @@ def bpit_infrastructure_facility(infrastruture_facilities):
     rows = cursorObj.fetchall()
     return {'fulfillmentText': rows[0][0]}
 
-# print(bpit_infrastructure_facility("class"))
-# faculty_info_by_name("Description","Dr Bhawna","Suri")
 
+print(faculty_room_navigation("Dr Deepali","Virani"))
 
