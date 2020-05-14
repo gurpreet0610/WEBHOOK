@@ -47,7 +47,7 @@ def faculty_name_expertise(department,expertise):
     try:
         con = sqlite3.connect('data.sqlite')
         cursorObj = con.cursor()
-        if(department==""):
+        if(department=="" or department==None):
             cursorObj.execute("SELECT Name,Department,Designation FROM FacultyDetails WHERE Expertise LIKE '%{}%';".format(expertise))
         else:
             cursorObj.execute("SELECT Name,Department,Designation FROM FacultyDetails WHERE Expertise LIKE '%{}%' and Department LIKE '%{}%';".format(expertise,department))
@@ -75,11 +75,11 @@ def faculty_info_dept_designation(category,department,designation):
         if category =="Description":
             cursorObj.execute("SELECT {},Name FROM FacultyDetails WHERE Department LIKE '%{}%' and Designation LIKE '%{}%';".format(category+"_Speech",department,designation))
         else:
-            cursorObj.execute("SELECT {},Name FROM FacultyDetails WHERE Department LIKE '%{}%';".format(category,department,designation))   
+            cursorObj.execute("SELECT {},Name FROM FacultyDetails WHERE Department LIKE '%{}%' and Designation LIKE '%{}%';".format(category,department,designation))   
         rows = cursorObj.fetchall()
         if(len(rows)==0):
             response="Sorry, I can try one more time if you ask me again. "
-        else:
+        elif(len(rows)==1):
             full_name=rows[0][1]
             if(category=="Description"):
                 response=rows[0][0]
@@ -93,6 +93,8 @@ def faculty_info_dept_designation(category,department,designation):
                 response=full_name+" is the " + rows[0][0] + " of BPIT"
             elif(category=="Department"):
                 response=full_name+" belongs to " + rows[0][0] + " department"
+        else:
+            response="There are multiple "+designation+"s in "+department+" department and their respective "+category+" is displayed on the screen"
     except Exception as e:
         response="Sorry, I can try one more time if you ask me again. "
     return {'fulfillmentText': response}
