@@ -44,7 +44,7 @@ def results(req):
     elif(action=="root_faculty.faculty.faculty_name_by_expertise"):
         response=faculty_name_expertise(parameters.get('departments'),parameters.get("faculty_expertise"))
     elif(action=="root_faculty.faculty.faculty_room_navigation"):
-        response=faculty_room_navigation(parameters.get("Faculty_First_Name"),parameters.get("Faculty_Last_Name"),req)
+        response=faculty_room_navigation(parameters.get("Faculty_First_Name"),parameters.get("Faculty_Last_Name"))
 
     # return a fulfillment response
     return response
